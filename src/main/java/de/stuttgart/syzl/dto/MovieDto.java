@@ -1,17 +1,14 @@
-package de.stuttgart.syzl.entity;
+package de.stuttgart.syzl.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name="movies")
 @Data
 @NoArgsConstructor
-public class Movie {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+public class MovieDto {
+
     private Long movieId;
 
     //imdb values
