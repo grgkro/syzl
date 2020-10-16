@@ -48,7 +48,7 @@ public class SeriesServiceIMDB {
 
             Request request = new Request.Builder()
 
-                    .url(IMDB_URL + "/Top250TVs/" + IMDB_APIKey )
+                    .url(IMDB_URL + "Top250TVs/" + IMDB_APIKey )
 
                     .method("GET", null)
 

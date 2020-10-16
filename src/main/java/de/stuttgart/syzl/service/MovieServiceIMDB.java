@@ -44,7 +44,7 @@ public class MovieServiceIMDB {
     public List<MovieDto> getTop250MoviesFromIMDB() throws IOException {
 
         // get data from IMDB API
-        String jsonData = getJSONDataFromIMDBBySubURL("/Top250Movies/");
+        String jsonData = getJSONDataFromIMDBBySubURL("Top250Movies/");
         //transform the items in jsonData to JSONArray
         JSONArray jArrayMovies = transformStringToJSONArray(jsonData, "items");
         // get error message
@@ -92,7 +92,7 @@ public class MovieServiceIMDB {
         return moviesToReturn;
     }
 
-    private String getJSONDataFromIMDBBySubURL(String subURL) {
+    public String getJSONDataFromIMDBBySubURL(String subURL) {
         String jsonData = null;
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
@@ -126,7 +126,7 @@ public class MovieServiceIMDB {
     public List<NewMovieIMDBDto> getMoviesInTheatersFromIMDB() {
         List<NewMovieIMDBDto> moviesToReturn = new ArrayList<>();
         // get data from IMDB API
-        String jsonData = getJSONDataFromIMDBBySubURL("/InTheaters/");
+        String jsonData = getJSONDataFromIMDBBySubURL("InTheaters/");
         //transform the items in jsonData to JSONArray
         JSONArray jArrayMovies = transformStringToJSONArray(jsonData, "items");
         // get error message
@@ -162,7 +162,7 @@ public class MovieServiceIMDB {
 
         List<NewMovieIMDBDto> moviesToReturn = new ArrayList<>();
         // get data from IMDB API
-        String jsonData = getJSONDataFromIMDBBySubURL("/MostPopularMovies/");
+        String jsonData = getJSONDataFromIMDBBySubURL("MostPopularMovies/");
         //transform the items in jsonData to JSONArray
         JSONArray jArrayMovies = transformStringToJSONArray(jsonData, "items");
         // get error message
