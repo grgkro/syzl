@@ -1,10 +1,11 @@
 package de.stuttgart.syzl.repository;
 
 import de.stuttgart.syzl.entity.Movie;
+import de.stuttgart.syzl.entity.Series;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    Movie findById(String id);
+public interface SeriesRepository extends JpaRepository<Series, Integer> {
+    Series findById(String id);
 }

@@ -6,20 +6,20 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name="movies")
+@Table(name="series")
 @Data
 @NoArgsConstructor
-public class Movie {
+public class Series {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long movieId;
+    private Long seriesId;
 
     private boolean netflix;
     private boolean prime;
     private boolean youtube;
     private boolean imdb;
 
-    //imdb top250Movies values
+    //imdb values
     private String id;
     private String rank;
     private String title;
@@ -29,7 +29,4 @@ public class Movie {
     private String crew;
     private String imDbRating;
     private String imDbRatingCount;
-
-    //imdb mostPopularMovie
-    public String rankUpDown;
 }

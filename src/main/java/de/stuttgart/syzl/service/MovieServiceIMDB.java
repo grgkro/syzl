@@ -1,9 +1,13 @@
 package de.stuttgart.syzl.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.stuttgart.syzl.dto.MovieDto;
+import de.stuttgart.syzl.dto.NewMovieIMDBDto;
 import de.stuttgart.syzl.entity.Movie;
+import de.stuttgart.syzl.entity.NewMovieIMDB;
 import de.stuttgart.syzl.repository.MovieRepository;
+import de.stuttgart.syzl.repository.NewMovieIMDBRepository;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -26,17 +30,70 @@ public class MovieServiceIMDB {
     private MovieRepository movieRepository;
 
     @Autowired
+    private NewMovieIMDBRepository newMovieIMDBRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Value("${imdb.api_key}")
     private String IMDB_APIKey;
 
+    @Value("${imdb.api_url}")
     private String IMDB_URL;
 
-    public List<MovieDto> getAllMoviesFromIMDB() throws IOException {
+    public List<MovieDto> getTop250MoviesFromIMDB() throws IOException {
+
+        // get data from IMDB API
+        String jsonData = getJSONDataFromIMDBBySubURL("/Top250Movies/");
+        //transform the items in jsonData to JSONArray
+        JSONArray jArrayMovies = transformStringToJSONArray(jsonData, "items");
+        // get error message
+        String errorMessage = jsonData.split(",\"errorMessage\":")[1];
+            System.out.println("---------Error Message:" + errorMessage + "---------");
+        // transform JSONArray to Entities and save them in DB
+        return transformJSONArrayToDTOs(jArrayMovies);
+    }
+
+    private JSONArray transformStringToJSONArray(String jsonData, String arrayIdentifier) {
+        try {
+            JSONObject jObject = new JSONObject(jsonData);
+            return jObject.getJSONArray(arrayIdentifier);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private List<MovieDto> transformJSONArrayToDTOs(JSONArray jArrayMovies) {
         List<MovieDto> moviesToReturn = new ArrayList<>();
-        JSONObject jObject;
-        JSONArray jArray = null;
+        try {
+            for (int i = 0; i < jArrayMovies.length(); i++) {
+                String json = jArrayMovies.get(i).toString();
+                ObjectMapper objectMapper = new ObjectMapper();
+                Movie movie = objectMapper.readValue(json, Movie.class);
+                movie.setImdb(true);
+                System.out.println(movie.getFullTitle());
+                Movie movieFromDatabase = movieRepository.findById(movie.getId());
+
+                if (movieFromDatabase == null) {
+                    movieRepository.save(movie);
+                    MovieDto movieDto = modelMapper.map(movie, MovieDto.class);
+                    moviesToReturn.add(movieDto);
+                } else {
+                    MovieDto movieDto = modelMapper.map(movieFromDatabase, MovieDto.class);
+                    moviesToReturn.add(movieDto);
+                }
+
+            }
+        } catch (JSONException | JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return moviesToReturn;
+    }
+
+    private String getJSONDataFromIMDBBySubURL(String subURL) {
+        String jsonData = null;
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
 
@@ -44,7 +101,7 @@ public class MovieServiceIMDB {
 
             Request request = new Request.Builder()
 
-                    .url("https://imdb-api.com/en/API/Top250Movies/" + IMDB_APIKey )
+                    .url(IMDB_URL + subURL + IMDB_APIKey )
 
                     .method("GET", null)
 
@@ -57,47 +114,62 @@ public class MovieServiceIMDB {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            String jsonData = response.body().string();
-             jObject = new JSONObject(jsonData);
-             jArray = jObject.getJSONArray("items");
+            jsonData = response.body().string();
 
-            for (int i = 0; i < jArray.length(); i++) {
-                JSONObject object     = jArray.getJSONObject(i);
-            }
-        } catch (JSONException e) {
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        return jsonData;
+    }
+
+    public List<NewMovieIMDBDto> getMoviesInTheatersFromIMDB() {
+        List<NewMovieIMDBDto> moviesToReturn = new ArrayList<>();
+        // get data from IMDB API
+        String jsonData = getJSONDataFromIMDBBySubURL("/InTheaters/");
+        //transform the items in jsonData to JSONArray
+        JSONArray jArrayMovies = transformStringToJSONArray(jsonData, "items");
+        // get error message
+        String errorMessage = jsonData.split(",\"errorMessage\":")[1];
+        System.out.println("---------Error Message:" + errorMessage + "---------");
 
         try {
-            for (int i = 0; i < jArray.length(); i++) {
-                String json = jArray.get(i).toString();
-                System.out.println(json);
+            for (int i = 0; i < jArrayMovies.length(); i++) {
+                String json = jArrayMovies.get(i).toString();
                 ObjectMapper objectMapper = new ObjectMapper();
-                Movie movie = objectMapper.readValue(json, Movie.class);
+                NewMovieIMDB movie = objectMapper.readValue(json, NewMovieIMDB.class);
                 System.out.println(movie.getFullTitle());
-                movieRepository.save(movie);
-                MovieDto movieDto = modelMapper.map(movie, MovieDto.class);
-                moviesToReturn.add(movieDto);
+                NewMovieIMDB movieFromDatabase = newMovieIMDBRepository.findById(movie.getId());
+
+                if (movieFromDatabase == null) {
+                    newMovieIMDBRepository.save(movie);
+                    NewMovieIMDBDto movieDto = modelMapper.map(movie, NewMovieIMDBDto.class);
+                    moviesToReturn.add(movieDto);
+                } else {
+                    NewMovieIMDBDto movieDto = modelMapper.map(movieFromDatabase, NewMovieIMDBDto.class);
+                    moviesToReturn.add(movieDto);
+                }
+
             }
-        } catch (JSONException e) {
+        } catch (JSONException | JsonProcessingException e) {
             e.printStackTrace();
             return null;
         }
         return moviesToReturn;
     }
 
-    public List<Movie> getTop250MoviesFromIMDB() {
+    public List<MovieDto> getMostPopularMoviesFromIMDB() {
 
-        return null;
-    }
+        List<NewMovieIMDBDto> moviesToReturn = new ArrayList<>();
+        // get data from IMDB API
+        String jsonData = getJSONDataFromIMDBBySubURL("/MostPopularMovies/");
+        //transform the items in jsonData to JSONArray
+        JSONArray jArrayMovies = transformStringToJSONArray(jsonData, "items");
+        // get error message
+        String errorMessage = jsonData.split(",\"errorMessage\":")[1];
+        System.out.println("---------Error Message:" + errorMessage + "---------");
+        // transform JSONArray to Entities and save them in DB
+        return transformJSONArrayToDTOs(jArrayMovies);
 
-    public List<Movie> getTop250TVsFromIMDB() {
-
-        return null;
-    }
-
-    public List<Movie> getMostPopularMoviesFromIMDB() {
-
-        return null;
     }
 }

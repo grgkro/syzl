@@ -1,6 +1,7 @@
 package de.stuttgart.syzl.controller;
 
 import de.stuttgart.syzl.dto.MovieDto;
+import de.stuttgart.syzl.dto.NewMovieIMDBDto;
 import de.stuttgart.syzl.entity.Movie;
 import de.stuttgart.syzl.service.MovieService;
 import de.stuttgart.syzl.service.MovieServiceIMDB;
@@ -32,15 +33,36 @@ public class MovieController {
     @GetMapping("/movies/imdb/top250")
     @ApiOperation(value = "Return the imdb top 250")
     public ResponseEntity getIMBDTop250() throws IOException {
-        List<MovieDto> moviesToReturn = movieServiceIMDB.getAllMoviesFromIMDB();
+        List<MovieDto> moviesToReturn = movieServiceIMDB.getTop250MoviesFromIMDB();
         if (moviesToReturn != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(moviesToReturn);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The top 250 imdb movies couldn't be downloaded.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The top 250 imdb movies couldn't be downloaded from imdb.");
         }
-
-
     }
+
+    @GetMapping("/movies/imdb/inTheaters")
+    @ApiOperation(value = "Return in theaters movies from imdb ")
+    public ResponseEntity getIMBDMoviesInTheaters() throws IOException {
+        List<NewMovieIMDBDto> moviesToReturn = movieServiceIMDB.getMoviesInTheatersFromIMDB();
+        if (moviesToReturn != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(moviesToReturn);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The in theaters movies couldn't be downloaded from imdb.");
+        }
+    }
+
+    @GetMapping("/movies/imdb/mostPopular")
+    @ApiOperation(value = "Return in theaters movies from imdb ")
+    public ResponseEntity getMostPopularMoviesFromIMDB() throws IOException {
+        List<MovieDto> moviesToReturn = movieServiceIMDB.getMostPopularMoviesFromIMDB();
+        if (moviesToReturn != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(moviesToReturn);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The in theaters movies couldn't be downloaded from imdb.");
+        }
+    }
+
 
     @GetMapping("/users/{userId}/movies/next/{amount}")
     @ApiOperation(value = "Return next available movies for specific user")
