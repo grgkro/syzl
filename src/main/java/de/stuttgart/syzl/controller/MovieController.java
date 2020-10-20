@@ -7,9 +7,6 @@ import de.stuttgart.syzl.service.MovieService;
 import de.stuttgart.syzl.service.MovieServiceIMDB;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import okhttp3.Response;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +39,7 @@ public class MovieController {
     }
 
     @GetMapping("/movies/imdb/inTheaters")
-    @ApiOperation(value = "Return in theaters movies from imdb ")
+    @ApiOperation(value = "Returns all movies currently in theaters (in the US) from imdb ")
     public ResponseEntity getIMBDMoviesInTheaters() throws IOException {
         List<NewMovieIMDBDto> moviesToReturn = movieServiceIMDB.getMoviesInTheatersFromIMDB();
         if (moviesToReturn != null) {
@@ -53,7 +50,7 @@ public class MovieController {
     }
 
     @GetMapping("/movies/imdb/mostPopular")
-    @ApiOperation(value = "Return in theaters movies from imdb ")
+    @ApiOperation(value = "Return most popular movies from imdb ")
     public ResponseEntity getMostPopularMoviesFromIMDB() throws IOException {
         List<MovieDto> moviesToReturn = movieServiceIMDB.getMostPopularMoviesFromIMDB();
         if (moviesToReturn != null) {
