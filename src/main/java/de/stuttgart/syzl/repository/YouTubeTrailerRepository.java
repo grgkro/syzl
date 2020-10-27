@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface YouTubeTrailerRepository extends JpaRepository<YouTubeTrailer, Integer> {
-    YouTubeTrailer findByImDbId(String imDbId);
+    YouTubeTrailer findBySourceId(String sourceId);
 }

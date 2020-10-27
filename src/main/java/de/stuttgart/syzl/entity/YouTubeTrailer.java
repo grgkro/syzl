@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,20 +15,14 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class YouTubeTrailer {
     @Id
-    public String imDbId;
-
-    public String title;
-
-    public String fullTitle;
-
-    public String type;
-
-    public String year;
-
-    public String videoId;
-
-    public String videoUrl;
-
-    public String errorMessage;
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+    private String sourceId;
+    private String title;
+    private String fullTitle;
+    private String year;
+    private String videoId;
+    private String videoUrl;
+    private String errorMessage;
 
 }

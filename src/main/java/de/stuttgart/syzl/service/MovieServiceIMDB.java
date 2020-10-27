@@ -2,12 +2,8 @@ package de.stuttgart.syzl.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.stuttgart.syzl.dto.MovieDto;
-import de.stuttgart.syzl.dto.NewMovieIMDBDto;
 import de.stuttgart.syzl.entity.Movie;
-import de.stuttgart.syzl.entity.NewMovieIMDB;
 import de.stuttgart.syzl.repository.MovieRepository;
-import de.stuttgart.syzl.repository.NewMovieIMDBRepository;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -30,9 +26,6 @@ public class MovieServiceIMDB {
     private MovieRepository movieRepository;
 
     @Autowired
-    private NewMovieIMDBRepository newMovieIMDBRepository;
-
-    @Autowired
     private ModelMapper modelMapper;
 
     @Value("${imdb.api_key}")
@@ -41,6 +34,7 @@ public class MovieServiceIMDB {
     @Value("${imdb.api_url}")
     private String IMDB_URL;
 
+    /*
     public List<MovieDto> getTop250MoviesFromIMDB() throws IOException {
 
         // get data from IMDB API
@@ -172,4 +166,5 @@ public class MovieServiceIMDB {
         return transformJSONArrayToDTOs(jArrayMovies);
 
     }
+    */
 }

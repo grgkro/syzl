@@ -1,35 +1,45 @@
 package de.stuttgart.syzl.entity;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="movies")
 @Data
-@NoArgsConstructor
-public class Movie {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long movieId;
+public class Movie extends Media {
 
-    private boolean netflix;
-    private boolean prime;
-    private boolean youtube;
-    private boolean imdb;
+    private String rankUpDown;
+    private boolean isInTheater;
+    private int length;
+    
+    public Movie () {}
+    
+    
+	public String getRankUpDown() {
+		return rankUpDown;
+	}
 
-    //imdb top250Movies values
-    private String id;
-    private String rank;
-    private String title;
-    private String fullTitle;
-    private String year;
-    private String image;
-    private String crew;
-    private String imDbRating;
-    private String imDbRatingCount;
+	public void setRankUpDown(String rankUpDown) {
+		this.rankUpDown = rankUpDown;
+	}
 
-    //imdb mostPopularMovie
-    public String rankUpDown;
+	public boolean isInTheater() {
+		return isInTheater;
+	}
+
+	public void setInTheater(boolean isInTheater) {
+		this.isInTheater = isInTheater;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+    
+    
 }
