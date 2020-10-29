@@ -1,6 +1,6 @@
 package de.stuttgart.syzl.controller;
 
-import de.stuttgart.syzl.dto.YouTubeTrailerDto;
+// import de.stuttgart.syzl.dto.YouTubeTrailerDto;
 import de.stuttgart.syzl.service.YouTubeTrailerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +17,7 @@ public class YouTubeTrailerController {
     @Autowired
     private YouTubeTrailerService youTubeTrailerService;
 
+    /*
     @GetMapping("/imdb/trailers/{imdbId}")
     @ApiOperation(value = "Returns one YouTube Trailer URL by imdbID")
     public ResponseEntity getYouTubeTrailerURL(@PathVariable String imdbId) {
@@ -27,6 +28,7 @@ public class YouTubeTrailerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The youtube trailer URL couldn't be downloaded from IMDB.");
         }
     }
+    */
 
 
     

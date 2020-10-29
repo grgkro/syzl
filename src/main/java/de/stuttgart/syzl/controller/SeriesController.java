@@ -1,7 +1,7 @@
 package de.stuttgart.syzl.controller;
 
-import de.stuttgart.syzl.dto.MovieDto;
-import de.stuttgart.syzl.dto.SeriesDto;
+// import de.stuttgart.syzl.dto.MovieDto;
+// import de.stuttgart.syzl.dto.SeriesDto;
 import de.stuttgart.syzl.entity.Movie;
 import de.stuttgart.syzl.service.MovieService;
 import de.stuttgart.syzl.service.MovieServiceIMDB;
@@ -26,6 +26,7 @@ public class SeriesController {
     @Autowired
     private SeriesServiceIMDB seriesServiceIMDB;
 
+    /*
 
     @GetMapping("/TVShows/imdb/top250")
     @ApiOperation(value = "Return the imdb top 250 TV shows")
@@ -39,6 +40,7 @@ public class SeriesController {
 
 
     }
+    */
 
 //    @GetMapping("/users/{userId}/series/next/{amount}")
 //    @ApiOperation(value = "Return next available series for specific user")

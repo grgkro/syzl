@@ -1,10 +1,8 @@
 package de.stuttgart.syzl.controller;
 
-import de.stuttgart.syzl.dto.MovieDto;
-import de.stuttgart.syzl.dto.NewMovieIMDBDto;
-import de.stuttgart.syzl.entity.Movie;
+
+import de.stuttgart.syzl.service.MediaUpdateService;
 import de.stuttgart.syzl.service.MovieService;
-import de.stuttgart.syzl.service.MovieServiceIMDB;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -22,21 +19,30 @@ public class MovieController {
 
     @Autowired
     private MovieService movieService;
-
     @Autowired
-    private MovieServiceIMDB movieServiceIMDB;
+    private MediaUpdateService updateService;
 
 
-    @GetMapping("/movies/imdb/top250")
+    @GetMapping("/retrieve")
     @ApiOperation(value = "Return the imdb top 250")
-    public ResponseEntity getIMBDTop250() throws IOException {
-        List<MovieDto> moviesToReturn = movieServiceIMDB.getTop250MoviesFromIMDB();
-        if (moviesToReturn != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(moviesToReturn);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The top 250 imdb movies couldn't be downloaded from imdb.");
-        }
-    }
+    public ResponseEntity getAllFilms() throws IOException {
+    	return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchMovies());
+    }    
+    
+    @GetMapping("/updateDB")
+    @ApiOperation(value = "Return the imdb top 250")
+    public ResponseEntity fetchFilmsFromDB() throws IOException {
+    	updateService.updateAllDB();
+    	return ResponseEntity.status(HttpStatus.OK).body("Movie has been fetched");
+    }    
+    
+    @GetMapping("/fetch/{id}")
+    @ApiOperation(value = "Return a specific film")
+    public ResponseEntity getFilm(@PathVariable String id) throws IOException {
+    	return ResponseEntity.status(HttpStatus.OK).body(movieService.getMovie(id));
+    }    
+    
+/*
 
     @GetMapping("/movies/imdb/inTheaters")
     @ApiOperation(value = "Returns all movies currently in theaters (in the US) from imdb ")
@@ -60,50 +66,5 @@ public class MovieController {
         }
     }
 
-
-    @GetMapping("/users/{userId}/movies/next/{amount}")
-    @ApiOperation(value = "Return next available movies for specific user")
-    public String getNextMovies(@PathVariable int userId, @PathVariable int amount) throws IOException {
-
-        return "Hello";
-    }
-
-    @GetMapping("/users/{userId}/movies/liked")
-    @ApiOperation(value = "Return all liked movies for specific user")
-    public String getLiked(@PathVariable int userId) {
-
-        return "Hello";
-    }
-
-    @GetMapping("/users/{userId}/movies/disliked")
-    @ApiOperation(value = "Return all disliked movies for specific user")
-    public String getDisliked(@PathVariable int userId) {
-
-        return "Hello";
-    }
-
-    @GetMapping("/users/{userId}/movies/swipedRight")
-    @ApiOperation(value = "Return all liked movies for specific user")
-    public String getSwipedRight(@PathVariable int userId) {
-
-        return "Hello";
-    }
-
-    @GetMapping("/users/{userId}/movies/swipedLeft")
-    @ApiOperation(value = "Return all liked movies for specific user")
-    public String getSwipedLeft(@PathVariable int userId) {
-
-        return "Hello";
-    }
-
-
-
-    @PutMapping("/add/{name}")
-    @ApiOperation(value = "Return all available movies converted to DTOs")
-    public void addNewMovie(@PathVariable String name) {
-        Movie movie = new Movie();
-
-
-        movieService.addNewMovie(movie);
-    }
+*/
 }

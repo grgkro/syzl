@@ -1,10 +1,6 @@
 package de.stuttgart.syzl.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.stuttgart.syzl.dto.YouTubeTrailerDto;
-import de.stuttgart.syzl.entity.YouTubeTrailer;
+
 import de.stuttgart.syzl.repository.YouTubeTrailerRepository;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,7 +26,7 @@ public class YouTubeTrailerService {
 
     @Value("${imdb.api_url}")
     private String IMDB_URL;
-
+/*
     public YouTubeTrailerDto getURL(String imdbId) {
         // get data from IMDB API
         String jsonData = getJSONDataFromIMDBBySubURL("YouTubeTrailer/", imdbId);
@@ -57,7 +53,7 @@ public class YouTubeTrailerService {
         }
         return null;
     }
-
+*/
     public String getJSONDataFromIMDBBySubURL(String subURL, String imdbId) {
         String jsonData = null;
         try {

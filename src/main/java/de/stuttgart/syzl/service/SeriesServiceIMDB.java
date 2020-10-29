@@ -1,8 +1,6 @@
 package de.stuttgart.syzl.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.stuttgart.syzl.dto.MovieDto;
-import de.stuttgart.syzl.dto.SeriesDto;
 import de.stuttgart.syzl.entity.Movie;
 import de.stuttgart.syzl.entity.Series;
 import de.stuttgart.syzl.repository.MovieRepository;
@@ -37,6 +35,8 @@ public class SeriesServiceIMDB {
     @Value("${imdb.api_url}")
     private String IMDB_URL;
 
+    
+    /*
     public List<SeriesDto> getTop250SeriesFromIMDB() throws IOException {
         List<SeriesDto> seriesToReturn = new ArrayList<>();
         JSONObject jObject;
@@ -98,9 +98,6 @@ public class SeriesServiceIMDB {
         }
         return seriesToReturn;
     }
+    */
 
-    public List<Series> getMostPopularSeriesFromIMDB() {
-
-        return null;
-    }
 }
