@@ -36,7 +36,7 @@ public class MediaUpdateService {
         for (int i = 0; i < array.length(); i++) {
         	try {
         		if (URL.contains("imdb-api"))
-        			movies.add(createMovieFromImdbJSON(array.getJSONObject(i)));
+        			movies.add(createMovieFromImdbJSON(array.getJSONObject(i), URL.contains("Theater")));
         		else if (URL.contains("api.themoviedb"))
         			movies.add(createMovieFromTmdbJSON(array.getJSONObject(i)));
 	        } catch (Exception e) {
@@ -74,7 +74,7 @@ public class MediaUpdateService {
     }
 	
     
-    private Movie createMovieFromImdbJSON(JSONObject obj) {
+    private Movie createMovieFromImdbJSON(JSONObject obj, boolean theater) {
     	try {
     	Movie result = new Movie();
     	if (obj.has("id")) result.setSourceId(obj.get("id").toString());
@@ -87,6 +87,7 @@ public class MediaUpdateService {
     	if (obj.has("runtimeMins")) result.setLength(Integer.parseInt(obj.get("runtimeMins").toString()));
     	if (obj.has("imDbRating")) result.setRating(obj.get("imDbRating").toString());
     	if (obj.has("imDbRatingCount") && !obj.get("imDbRatingCount").toString().isEmpty()) result.setRatingCount(Long.parseLong(obj.get("imDbRatingCount").toString()));
+    	result.setInTheater(theater);
     	return result;
     	} catch (Exception e) {
     		e.printStackTrace();
