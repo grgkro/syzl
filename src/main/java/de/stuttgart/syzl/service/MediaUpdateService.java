@@ -21,8 +21,8 @@ public class MediaUpdateService {
     private ConnectivityService connect;
 
 	private String [] accessDB = {
-			// "https://imdb-api.com/en/API/Top250Movies/k_ul469h9q",
-			// "https://imdb-api.com/en/API/InTheaters/k_ul469h9q",
+			"https://imdb-api.com/en/API/Top250Movies/k_ul469h9q",
+			"https://imdb-api.com/en/API/InTheaters/k_ul469h9q",
 			"https://api.themoviedb.org/3/discover/movie?api_key=415bb43f2ce87c54d21b5aa21ba6d7b8"
 	};
 
