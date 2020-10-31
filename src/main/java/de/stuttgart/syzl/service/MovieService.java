@@ -5,6 +5,7 @@ import de.stuttgart.syzl.dto.MovieDto;
 import de.stuttgart.syzl.repository.MovieRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ public class MovieService {
     private MovieRepository movieRepository;
 
     
-    public ArrayList<MovieDto> fetchMovies() {
-    	ArrayList<MovieDto> movies = new ArrayList<MovieDto> () ;
+    public ArrayList<MovieDto> fetchAllMovies() {
+    	ArrayList<MovieDto> movies = new ArrayList<MovieDto>();
     	for (Movie movie: movieRepository.findAll()) {
     		movies.add(mapToDto(movie));
     	}
@@ -25,8 +26,29 @@ public class MovieService {
     	return movies;
     }
     
-    public MovieDto getMovie(String sourceId) {
-    	Movie movie = movieRepository.findBySourceId(sourceId);
+    public ArrayList<MovieDto> fetchTopMovies(int max) {
+    	ArrayList<MovieDto> movieDtos = new ArrayList<MovieDto>();
+    	ArrayList<Movie> movies = (ArrayList<Movie>) movieRepository.findAll();
+    	
+    	movies.stream()
+			.filter(movie -> movie.getRatingCount() != null)
+			.filter(movie -> movie.getRatingCount() > 100_000)
+			.sorted(new Comparator() {
+				@Override
+				public int compare(Object o1, Object o2) {
+					// TODO Auto-generated method stub
+					return -((Movie) o1).getRating().compareTo(((Movie) o2).getRating());
+				}
+				
+			})
+			.limit(max)
+    		.forEach(e -> movieDtos.add(mapToDto((Movie) e)));
+    	
+    	return movieDtos;
+    }
+    
+    public MovieDto getMovie(Long id) {
+    	Movie movie = movieRepository.findById(id);
     	return (movie == null) ? null : mapToDto(movie);
     }
     

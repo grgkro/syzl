@@ -23,10 +23,10 @@ public class MovieController {
     private MediaUpdateService updateService;
 
 
-    @GetMapping("/retrieve")
+    @GetMapping("/fetch")
     @ApiOperation(value = "Return the imdb top 250")
     public ResponseEntity getAllFilms() throws IOException {
-    	return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchMovies());
+    	return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchAllMovies());
     }    
     
     @GetMapping("/updateDB")
@@ -38,8 +38,14 @@ public class MovieController {
     
     @GetMapping("/fetch/{id}")
     @ApiOperation(value = "Return a specific film")
-    public ResponseEntity getFilm(@PathVariable String id) throws IOException {
+    public ResponseEntity getFilm(@PathVariable Long id) throws IOException {
     	return ResponseEntity.status(HttpStatus.OK).body(movieService.getMovie(id));
+    }    
+    
+    @GetMapping("/fetch/top/{max}")
+    @ApiOperation(value = "Return the top 250 films")
+    public ResponseEntity getTopFilms(@PathVariable int max) throws IOException {
+    	return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchTopMovies(max));
     }    
     
 /*
