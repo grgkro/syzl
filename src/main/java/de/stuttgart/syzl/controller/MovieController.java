@@ -48,6 +48,12 @@ public class MovieController {
     	return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchTopMovies(max));
     }    
     
+    @GetMapping("/fetch/theater/{max}")
+    @ApiOperation(value = "Return the top films in theater")
+    public ResponseEntity getTheaterFilms(@PathVariable int max) throws IOException {
+    	return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchTheaterMovies(max));
+    }    
+    
 /*
 
     @GetMapping("/movies/imdb/inTheaters")

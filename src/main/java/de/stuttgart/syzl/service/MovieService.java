@@ -28,19 +28,27 @@ public class MovieService {
     
     public ArrayList<MovieDto> fetchTopMovies(int max) {
     	ArrayList<MovieDto> movieDtos = new ArrayList<MovieDto>();
-    	ArrayList<Movie> movies = (ArrayList<Movie>) movieRepository.findAll();
     	
-    	movies.stream()
+    	movieRepository.findAll().stream()
 			.filter(movie -> movie.getRatingCount() != null)
 			.filter(movie -> movie.getRatingCount() > 100_000)
 			.sorted(new Comparator() {
 				@Override
 				public int compare(Object o1, Object o2) {
-					// TODO Auto-generated method stub
 					return -((Movie) o1).getRating().compareTo(((Movie) o2).getRating());
 				}
-				
 			})
+			.limit(max)
+    		.forEach(e -> movieDtos.add(mapToDto((Movie) e)));
+    	
+    	return movieDtos;
+    }
+    
+    public ArrayList<MovieDto> fetchTheaterMovies(int max) {
+    	ArrayList<MovieDto> movieDtos = new ArrayList<MovieDto>();
+    	
+    	movieRepository.findAll().stream()
+			.filter(movie -> movie.isInTheater())
 			.limit(max)
     		.forEach(e -> movieDtos.add(mapToDto((Movie) e)));
     	
