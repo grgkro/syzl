@@ -21,8 +21,8 @@ public class MediaUpdateService {
     private ConnectivityService connect;
 
 	private String [] accessDB = {
-			// "https://imdb-api.com/en/API/Top250Movies/k_ul469h9q",
-			// "https://imdb-api.com/en/API/InTheaters/k_ul469h9q",
+			"https://imdb-api.com/en/API/Top250Movies/k_ul469h9q",
+			"https://imdb-api.com/en/API/InTheaters/k_ul469h9q",
 			"https://api.themoviedb.org/3/discover/movie?api_key=415bb43f2ce87c54d21b5aa21ba6d7b8"
 	};
 
@@ -36,7 +36,7 @@ public class MediaUpdateService {
         for (int i = 0; i < array.length(); i++) {
         	try {
         		if (URL.contains("imdb-api"))
-        			movies.add(createMovieFromImdbJSON(array.getJSONObject(i)));
+        			movies.add(createMovieFromImdbJSON(array.getJSONObject(i), URL.contains("Theater")));
         		else if (URL.contains("api.themoviedb"))
         			movies.add(createMovieFromTmdbJSON(array.getJSONObject(i)));
 	        } catch (Exception e) {
@@ -74,7 +74,7 @@ public class MediaUpdateService {
     }
 	
     
-    private Movie createMovieFromImdbJSON(JSONObject obj) {
+    private Movie createMovieFromImdbJSON(JSONObject obj, boolean theater) {
     	try {
     	Movie result = new Movie();
     	if (obj.has("id")) result.setSourceId(obj.get("id").toString());
@@ -87,6 +87,7 @@ public class MediaUpdateService {
     	if (obj.has("runtimeMins")) result.setLength(Integer.parseInt(obj.get("runtimeMins").toString()));
     	if (obj.has("imDbRating")) result.setRating(obj.get("imDbRating").toString());
     	if (obj.has("imDbRatingCount") && !obj.get("imDbRatingCount").toString().isEmpty()) result.setRatingCount(Long.parseLong(obj.get("imDbRatingCount").toString()));
+    	result.setInTheater(theater);
     	return result;
     	} catch (Exception e) {
     		e.printStackTrace();
